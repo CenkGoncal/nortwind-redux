@@ -7,7 +7,7 @@ class CategoryList extends Component
 {
     //companent init fonksiyonu
     componentDidMount()
-    {
+    { 
       
         this.props.actions.getCategories()
     }
