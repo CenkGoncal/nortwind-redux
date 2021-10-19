@@ -10,7 +10,7 @@ function AddorUpdateCategory({
     history,
     ...props
 }) {
-
+ 
     const [category, setCategory] = useState({ ...props.category });
     const [errors, setErrors] = useState({});
 
