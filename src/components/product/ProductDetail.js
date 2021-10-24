@@ -6,7 +6,7 @@ import SelectInput from "../toolbox/SelectInput";
 const ProductDetail = ({categories, product, onSave, onChange, errors}) => {
     return (
         <form onSubmit={onSave}>
-            <Alert className={"alert" + product.id ? " alert-info" : " alert-success"}>{product.id ? "Güncelle" : "Ekle"}</Alert>
+            <Alert className={"alert" + product.id ? " alert-info" : " alert-success"}>{product.id ? "Product Güncelle" : "Product Ekle"}</Alert>
             <TextInput name="productName" label="Ürün İsmi" value={product.productName} onChange={onChange} error = { errors.productName } >
             </TextInput>
             

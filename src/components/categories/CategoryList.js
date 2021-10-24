@@ -53,11 +53,11 @@ class CategoryList extends Component {
                     <Row>
                         <Col xs="10">
                             Categories
-                            <span class="bg-danger text-white">({this.props.categories.length})</span>
+                            <span className="bg-danger text-white">({this.props.categories.length})</span>
                         </Col>
                         <Col xs="2">
                             <Button className="btn btn-success btn-sm float-right" title="Add Categories">
-                                <Link to="saveCategory" class="text-white link" >+</Link>
+                                <Link to="saveCategory" className="text-white link" >+</Link>
                             </Button>
                         </Col>
                     </Row>
@@ -73,7 +73,7 @@ class CategoryList extends Component {
                                     <Col xs="4">
                                         <div className="bnt-group">
                                         <Button className="btn btn-warning btn-sm" title="Edit Categories">
-                                            <Link to={"saveCategory/"+item.id} class="text-white link" >Edit</Link>
+                                            <Link to={"saveCategory/"+item.id} className="text-white link" >Edit</Link>
                                         </Button>
                                         <Button className="btn btn-danger btn-sm" title="Remove Categories"
                                                 onClick={() => this.deleteCategory(item)} >

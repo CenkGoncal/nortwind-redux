@@ -1,4 +1,5 @@
 import * as actionTypes from "./actionTypes"
+import axiosInstance from "./axiosConfig"
 
 
 export function getProductsSuccess(produts)
@@ -12,15 +13,19 @@ export function getProductsSuccess(produts)
 
 export function getProducts(categoryid) {
     return function (dispatch) {
-        let url = "http://localhost:3000/products";
+        let url = "/products";
         if(categoryid)
         {
             url = url +"?categoryId="+categoryid;
         }
 
-        return fetch(url)
+        return axiosInstance.get(url).then(function(response){
+            dispatch(getProductsSuccess(response.data))
+        })
+
+/*        return fetch(url)
                .then(response => response.json())
-               .then(result => dispatch(getProductsSuccess(result)))
+               .then(result => dispatch(getProductsSuccess(result)))*/
     }
 }
 
@@ -37,12 +42,22 @@ export function updateProductSuccess(product)
 
 export function saveProductApi(product)
 {
+    return axiosInstance({
+        method:product.id ? "PUT":"POST",
+        url:"/products/" + (product.id || ""),
+        data: product,
+        headers:{"content-type":"application/json"}
+    }).then(handleresponse)
+    .catch(handleError)
+
+    /*
     return fetch("http://localhost:3000/products/" + (product.id || ""),{
         method:product.id ? "PUT":"POST",
         headers:{"content-type":"application/json"},
         body: JSON.stringify(product)
     }).then(handleresponse)
       .catch(handleError)
+    */
 }
 
 export function saveProduct(product)
@@ -57,9 +72,9 @@ export function saveProduct(product)
 
 export async function handleresponse(response)
 {
-    if(response.ok)
+    if(response.status == 201 || response.status == 200)
     {
-        return response.json();
+        return response.data;
     }
 
     const error =  await response.text();
@@ -74,7 +89,7 @@ export function handleError(error)
 
 export async function handleResponseRemoved(response)
 {
-    if(response.ok)
+    if(response.status == 200)
     {
         return true;
     }
@@ -85,11 +100,16 @@ export async function handleResponseRemoved(response)
 
 export function deleteProductApi(product)
 {
-    return fetch("http://localhost:3000/products/" + (product.id ),{
+    return axiosInstance.delete("/products/"+(product.id),{
+        headers:{"content-type":"application/json"}
+    }).then(handleResponseRemoved)
+    .catch(handleError)
+
+   /* return fetch("http://localhost:3000/products/" + (product.id ),{
         method: "DELETE",
         headers:{"content-type":"application/json"}
     }).then(handleResponseRemoved)
-      .catch(handleError)
+      .catch(handleError)*/
 }
 
 export  function deleteProductSuccess(product)

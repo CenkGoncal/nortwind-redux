@@ -1,4 +1,6 @@
+//import axios from "axios";
 import * as actionTypes from "./actionTypes"
+import axiosInstance from "./axiosConfig"
 
 export function changeCategory(category) {
     return {
@@ -18,11 +20,15 @@ export function getCategoriesSuccess(categories)
 
 export function getCategories() {
     return function (dispatch) {
-        let url = "http://localhost:3000/categories";
+        let url = "/categories";
      
-        return fetch(url)
-               .then(response => response.json())
-               .then(result => dispatch(getCategoriesSuccess(result)))
+        return axiosInstance.get(url).then(function(response){
+            dispatch(getCategoriesSuccess(response.data))
+        }).catch(handleError);
+
+   //     return fetch(url)
+   //            .then(response => response.json())
+   //            .then(result => dispatch(getCategoriesSuccess(result)))
     }
 }
 
@@ -39,12 +45,21 @@ export function updateCategorySuccess(product)
 
 export function saveCategoryApi(category)
 {
-    return fetch("http://localhost:3000/categories/" + (category.id || ""),{
+    return axiosInstance({
+        method:category.id ? "PUT":"POST",
+        url:"/categories/" + (category.id || ""),
+        data: category,
+        headers:{"content-type":"application/json"}
+    }).then(function(result){
+        handleresponse(result,false);
+    }).catch(handleError);
+    
+  /*  return fetch("http://localhost:3000/categories/" + (category.id || ""),{
         method:category.id ? "PUT":"POST",
         headers:{"content-type":"application/json"},
         body: JSON.stringify(category)
     }).then(result => handleresponse(result,false))
-      .catch(handleError)
+      .catch(handleError)*/
 }
 
 export function saveCategory(category)
@@ -59,9 +74,9 @@ export function saveCategory(category)
 
 export async function handleresponse(response,isDelete)
 {
-    if(response.ok)
+    if(response.status == 201 || response.status == 200)
     {
-        return isDelete ? true : response.json();
+        return isDelete ? true : response.data;
     }
 
     const error =  await response.text();
@@ -76,11 +91,21 @@ export function handleError(error)
 
 export function deleteCategoryApi(category)
 {
+
+    return axiosInstance.delete("/categories/" + (category.id ),{
+        headers:{"content-type":"application/json"}
+    }).then(function(response){
+        console.log(response);
+
+        handleresponse(response,true);
+    }).catch(handleError);
+
+/*
     return fetch("http://localhost:3000/categories/" + (category.id ),{
         method: "DELETE",
         headers:{"content-type":"application/json"}
     }).then(result => handleresponse(result,true))
-      .catch(handleError)
+      .catch(handleError) */
 }
 
 export function deleteCategorySuccess(state)

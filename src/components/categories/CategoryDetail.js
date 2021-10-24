@@ -5,7 +5,7 @@ import TextInput from "../toolbox/TextInput";
 const CategoryDetail = ({ category, onSave, onChange, errors }) => {
     return (
         <form onSubmit={onSave}>
-            <Alert className={category.id ? "alert alert-warning" : "alert alert-success"}>{category.id ? "Güncelle" : "Ekle"}</Alert>
+            <Alert className={category.id ? "alert alert-warning" : "alert alert-success"}>{category.id ? "Category Güncelle" : "Category Ekle"}</Alert>
 
             <TextInput name="categoryName" label="Category Name" value={category.categoryName} onChange={onChange} error = { errors.categoryName } >
             </TextInput>
